@@ -99,4 +99,4 @@ More runs are in [docs/screenshots](docs/screenshots). The model's answers vary 
 
 ## License
 
-License: not decided yet.
+MIT. See [LICENSE](LICENSE). The license covers the code in this repo only; the workshop slides and example code belong to Rynet Malaysia.
