@@ -43,6 +43,10 @@ Copy-Item .env.example .env
 
 Open `.env` and put your key after `GROQ_API_KEY=`.
 
+To get a key, sign in to the Groq console, open **API Keys** and click **Create API Key**. Here is mine after a few test runs (the key itself is hidden, and yours should stay private too):
+
+![Groq console API Keys page with the key hidden](docs/screenshots/groq-api-key.png)
+
 ## Run
 
 Run everything from the repo root.
