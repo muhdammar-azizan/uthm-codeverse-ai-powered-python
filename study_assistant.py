@@ -34,6 +34,22 @@ def build_messages(topic: str) -> list[dict[str, str]]:
     ]
 
 
+SECTIONS = ("EXPLANATION", "COMMON USES", "EXAMPLE", "KEY POINTS", "QUIZ")
+
+
+def split_card(card: str) -> dict[str, str]:
+    """Split a card's text into {heading: body}. Used by the web app to lay it out."""
+    parts: dict[str, list[str]] = {}
+    current = None
+    for line in card.splitlines():
+        if line.strip() in SECTIONS:
+            current = line.strip()
+            parts[current] = []
+        elif current is not None:
+            parts[current].append(line)
+    return {name: "\n".join(lines).strip() for name, lines in parts.items()}
+
+
 def safe_study_card(client, topic: str) -> str | None:
     """Return a study card, or None (after printing a friendly message) on failure."""
     return friendly_chat(client, build_messages(topic))

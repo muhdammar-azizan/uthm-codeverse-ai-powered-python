@@ -6,6 +6,10 @@ This is based on the mini project from the UTHM CodeVerse Week 2 workshop (AI-Po
 
 ![Study card for "recursion"](docs/screenshots/recursion.png)
 
+There is also a small web version built with Streamlit:
+
+![Web version of the study assistant](docs/screenshots/web-app.png)
+
 ## What's inside
 
 | Folder / file | What it does |
@@ -13,6 +17,7 @@ This is based on the mini project from the UTHM CodeVerse Week 2 workshop (AI-Po
 | `rest_api/` | Three small exercises against the free [JSONPlaceholder](https://jsonplaceholder.typicode.com) API: list users (GET), check a to-do (GET), post a comment (POST). No key needed. |
 | `prompting/` | The same Groq call used four ways: zero-shot, system role, few-shot and chain-of-thought. |
 | `study_assistant.py` | The main app. Type a topic, get a study card. |
+| `app_streamlit.py` | The same study assistant as a simple web page (Streamlit). |
 | `extras/batch_cards.py` | Make cards for many topics at once, save them to JSON, and optionally POST them to JSONPlaceholder. |
 | `groq_client.py` | Shared helpers: loads the key, calls the model, and turns common errors into friendly messages. |
 
@@ -63,6 +68,15 @@ python -m prompting.chain_of_thought
 # several topics at once, saved to cards.json, also POSTed to JSONPlaceholder
 python -m extras.batch_cards --topics "recursion" "REST API" --post
 ```
+
+### Web version (optional)
+
+```powershell
+pip install -r requirements-web.txt
+streamlit run app_streamlit.py
+```
+
+Then open the local address Streamlit prints (usually http://localhost:8501). It uses your key from `.env`, so only run it on your own machine and don't share the address.
 
 If you hit a rate limit, wait a few seconds and try again. Free-tier limits can change, so check the Groq docs if something looks off.
 
