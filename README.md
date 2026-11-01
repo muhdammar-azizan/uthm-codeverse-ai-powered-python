@@ -1,16 +1,26 @@
-# AI Study Assistant
+# AI-Powered Python: REST APIs, Prompting and a Study Assistant
 
-A small command-line app that turns a tech topic into a beginner-friendly study card. Type something like `recursion` and it gives you a short explanation, common uses, a commented code example, key points and a few quiz questions. It uses the Groq API with the open-weight `openai/gpt-oss-120b` model.
+My hands-on practice repo from the UTHM CodeVerse Week 2 workshop, "AI-Powered Python". It goes from calling a plain REST API, to trying four prompting techniques, to a small command-line app that turns any tech topic into a beginner-friendly study card.
 
 This is based on the mini project from the UTHM CodeVerse Week 2 workshop (AI-Powered Python) by Rynet Malaysia. The workshop slides and example code are theirs and are not included here; this code is my own implementation.
 
-## Features
+![Study card for "recursion"](docs/screenshots/recursion.png)
 
-- Interactive loop: enter a topic, get a study card, type `quit` to leave
-- Or run one topic straight from the command line
-- Card sections: Explanation, Common Uses, Example, Key Points, Quiz
-- The prompt lives in one function (`build_messages`) so it is easy to change
-- Friendly messages instead of tracebacks for a missing key, no internet, a rejected key, and rate limits (HTTP 429)
+## What's inside
+
+| Folder / file | What it does |
+|---|---|
+| `rest_api/` | Three small exercises against the free [JSONPlaceholder](https://jsonplaceholder.typicode.com) API: list users (GET), check a to-do (GET), post a comment (POST). No key needed. |
+| `prompting/` | The same Groq call used four ways: zero-shot, system role, few-shot and chain-of-thought. |
+| `study_assistant.py` | The main app. Type a topic, get a study card. |
+| `extras/batch_cards.py` | Make cards for many topics at once, save them to JSON, and optionally POST them to JSONPlaceholder. |
+| `groq_client.py` | Shared helpers: loads the key, calls the model, and turns common errors into friendly messages. |
+
+## The study card
+
+For each topic you get five parts: **Explanation** (2-3 simple sentences), **Common Uses**, a short commented **Example**, 3-5 **Key Points**, and 2-3 **Quiz** questions. The prompt lives in one function, `build_messages()` in `study_assistant.py`, so it is easy to change.
+
+It uses the Groq API with the open-weight `openai/gpt-oss-120b` model. Friendly messages (not tracebacks) are shown for a missing key, no internet, a rejected key, and rate limits (HTTP 429).
 
 ## Requirements
 
@@ -26,21 +36,60 @@ pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-Open `.env` in an editor and put your key after `GROQ_API_KEY=`.
+Open `.env` and put your key after `GROQ_API_KEY=`.
 
 ## Run
 
+Run everything from the repo root.
+
 ```powershell
+# the study assistant (interactive; type quit to leave)
 python study_assistant.py
-```
 
-Or for a single topic:
-
-```powershell
+# or one topic straight away
 python study_assistant.py "REST API"
+
+# REST exercises (no key needed)
+python -m rest_api.list_users
+python -m rest_api.check_todo
+python -m rest_api.post_comment
+
+# prompting techniques (need the key)
+python -m prompting.zero_shot
+python -m prompting.system_role
+python -m prompting.few_shot
+python -m prompting.chain_of_thought
+
+# several topics at once, saved to cards.json, also POSTed to JSONPlaceholder
+python -m extras.batch_cards --topics "recursion" "REST API" --post
 ```
 
 If you hit a rate limit, wait a few seconds and try again. Free-tier limits can change, so check the Groq docs if something looks off.
+
+## Example output
+
+Real output from `python study_assistant.py "recursion"`:
+
+```text
+EXPLANATION
+Recursion is when a function calls itself to solve a smaller part of a problem. The function keeps calling itself until it reaches a simple case that can be solved directly.
+
+COMMON USES
+- Traversing tree or graph structures
+- Solving mathematical sequences like factorial or Fibonacci
+- Implementing divide-and-conquer algorithms such as quicksort
+
+EXAMPLE
+def factorial(n):
+    # base case: stop when n is 0
+    if n == 0:
+        return 1
+    # recursive case: n * factorial of (n-1)
+    return n * factorial(n - 1)
+...
+```
+
+More runs are in [docs/screenshots](docs/screenshots). The model's answers vary a little each time, and AI output can be wrong, so double-check anything you plan to rely on.
 
 ## Security notes
 
